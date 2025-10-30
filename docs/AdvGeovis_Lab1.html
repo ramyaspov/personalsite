@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Ramya Subramanian" />
+
+<meta name="date" content="2025-11-02" />
+
+<title>Assessing North Carolina’s Aging Population and Affordable Housing Crisis</title>
+
+<script src="site_libs/header-attrs-2.28/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Portfolio</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">About</a>
+</li>
+<li>
+  <a href="analyses.html">Analyses</a>
+</li>
+<li>
+  <a href="contact.html">Contact</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Assessing North Carolina’s Aging Population
+and Affordable Housing Crisis</h1>
+<h4 class="author">Ramya Subramanian</h4>
+<h4 class="date">2025-11-02</h4>
+
+</div>
+
+
+<pre class="r"><code>knitr::opts_chunk$set(echo = TRUE)</code></pre>
+<p>Affordable housing is minimal in many parts of North Carolina.
+Specifically, the elderly population are increasingly at risk of
+displacement due to being on fixed incomes. I will be examining where
+our aging population who are owners and renters of homes are found
+across North Carolina and its relationship to median monthly housing
+costs in 2023.</p>
+<p>Source: <a
+href="https://nciom.org/aging-with-dignity-in-north-carolina/"
+class="uri">https://nciom.org/aging-with-dignity-in-north-carolina/</a></p>
+<div id="loading-libraries" class="section level3">
+<h3>Loading Libraries</h3>
+<pre class="r"><code>library(ggplot2)
+library(tidycensus)
+library(tmap)
+library(tmaptools)
+library(dplyr)        
+library(sf)      
+library(RColorBrewer)
+library(classInt)     
+library(tidyverse)        
+library(cartography) 
+library(SpatialPosition)
+library(maptiles) 
+library(terra)
+library(potential)</code></pre>
+</div>
+<div id="access-api-code-and-load-census-data" class="section level3">
+<h3>Access API Code and Load Census Data</h3>
+<pre class="r"><code>#census_api_key(&quot;f3d78e8619bc671c28d7a271bf415a2377086d51&quot;, install = TRUE)
+# Using 2023 census data from American Community Survey 5 Year Data
+v2023 &lt;- load_variables(2023, &quot;acs5&quot;, cache = FALSE)
+# North Carolina&#39;s Median Monthly Housing Costs and Age 65-74 Owners and Renters
+variables &lt;- c(
+  MedianHouse = &quot;B25105_001&quot;,
+  NCOwner65 = &quot;B25007_009&quot;,
+  NCRenter65 = &quot;B25007_019&quot;
+)
+
+NCarolina &lt;- get_acs(state = &quot;NC&quot;, geography = &quot;tract&quot;, variables = variables, geometry = TRUE, cb = FALSE)</code></pre>
+<pre><code>## Getting data from the 2019-2023 5-year ACS</code></pre>
+<pre><code>## Downloading feature geometry from the Census website.  To cache shapefiles for use in future sessions, set `options(tigris_use_cache = TRUE)`.</code></pre>
+</div>
+<div id="cleaning-data" class="section level3">
+<h3>Cleaning Data</h3>
+<pre class="r"><code>NCarolina1 &lt;- NCarolina # easy to make changes without downloading census data multiple times
+NCarolina1$variable &lt;- as.factor(NCarolina1$variable) # make variables factors
+
+#Group the variables by county tract and make each variable its own column
+NCarolina1_wide &lt;- NCarolina1 %&gt;%
+  group_by(NAME, variable) %&gt;%
+  summarise(
+    estimate = mean(estimate, na.rm = TRUE),
+    .groups = &quot;drop&quot;
+  ) %&gt;%
+  pivot_wider(
+    names_from = variable,
+    values_from = estimate,
+    values_fn = mean,        # or first, if each combo is unique
+    values_fill = 0
+  )
+# Split county tract variable to access just county name
+NCarolina1_wide &lt;- NCarolina1_wide %&gt;%
+  mutate(
+    County = trimws(strsplit(NAME, &quot;;&quot;) %&gt;% sapply(`[`, 2))  # get 2nd item
+  )
+# Grouping Tracts into County
+NCarolina_county &lt;- NCarolina1_wide %&gt;%
+  group_by(County) %&gt;%
+  summarize(
+    MedianHouse = mean(MedianHouse, na.rm = TRUE),
+    NCOwner65 = sum(NCOwner65, na.rm = TRUE),
+    NCRenter65 = sum(NCRenter65, na.rm = TRUE),
+    geometry = st_union(geometry),
+    .groups = &quot;drop&quot;
+  ) %&gt;%
+  st_as_sf() #make into spatial feature
+
+head(NCarolina_county)</code></pre>
+<pre><code>## Simple feature collection with 6 features and 4 fields
+## Geometry type: POLYGON
+## Dimension:     XY
+## Bounding box:  xmin: -82.08108 ymin: 34.80671 xmax: -79.2366 ymax: 36.58814
+## Geodetic CRS:  NAD83
+## # A tibble: 6 × 5
+##   County           MedianHouse NCOwner65 NCRenter65                     geometry
+##   &lt;chr&gt;                  &lt;dbl&gt;     &lt;dbl&gt;      &lt;dbl&gt;                &lt;POLYGON [°]&gt;
+## 1 Alamance County         995.      8707       2208 ((-79.39252 35.8438, -79.38…
+## 2 Alexander County        645       2573        273 ((-81.02985 35.89012, -81.0…
+## 3 Alleghany County        741       1138        105 ((-81.15358 36.57008, -81.1…
+## 4 Anson County            795.      1401        321 ((-80.17853 35.14996, -80.1…
+## 5 Ashe County             725.      2011        340 ((-81.74193 36.41115, -81.7…
+## 6 Avery County            673.      1334        173 ((-81.97563 36.20508, -81.9…</code></pre>
+</div>
+<div
+id="visual-1-median-monthly-housing-costs-by-county-in-north-carolina"
+class="section level3">
+<h3>Visual 1: Median Monthly Housing Costs by County in North
+Carolina</h3>
+<pre class="r"><code>tm_shape(NCarolina_county) +
+  tm_polygons(
+    col = &quot;MedianHouse&quot;,
+    palette = &quot;-RdYlGn&quot;,
+    style = &quot;quantile&quot;,
+    border.col = NA,
+    title = &quot;Median Housing Costs ($)&quot;
+  ) +
+  tm_layout(
+    legend.outside = TRUE,
+    legend.outside.position = &quot;right&quot;,
+    main.title = &quot;North Carolina Median Housing Costs Per County in 2023&quot;,
+    main.title.size = 1.2,
+    main.title.fontface = &quot;bold&quot;
+  ) +
+  tm_compass(position = c(&quot;left&quot;, &quot;top&quot;), size = 1.5) +
+  tm_scale_bar(position = c(&quot;left&quot;, &quot;bottom&quot;))</code></pre>
+<p><img src="AdvGeovis_Lab1_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p>From this visualization, we can see the median housing costs are
+generally higher on mid-east counties of the state.</p>
+</div>
+<div
+id="visual-2-median-housing-costs-with-65-74-homeowner-distribution"
+class="section level3">
+<h3>Visual 2: Median Housing Costs with 65-74 Homeowner
+Distribution</h3>
+<pre class="r"><code># Centroid for the proportional symbol
+NCarolina_centroids &lt;- st_centroid(NCarolina_county)</code></pre>
+<pre><code>## Warning: st_centroid assumes attributes are constant over geometries</code></pre>
+<pre class="r"><code>tm_shape(NCarolina_county) + #Mean Housing Chloropleth
+  tm_polygons(
+    col = &quot;MedianHouse&quot;,
+    palette = &quot;-RdYlGn&quot;,
+    style = &quot;quantile&quot;,
+    border.col = NA,
+    title = &quot;Median Housing Costs ($)&quot;
+  ) +
+  tm_shape(NCarolina_centroids) + #Proportional Symbol
+  tm_symbols(
+    size = &quot;NCOwner65&quot;,   
+    col = &quot;black&quot;,            
+    alpha = 0.6,
+    scale = 1.5,
+    border.col = &quot;white&quot;,
+    legend.size.show = TRUE,
+    title.size = &quot;# of Home Owners Aged 65-74&quot;
+  ) +
+  tm_layout(
+    main.title = &quot;North Carolina Elderly Adult Homeownership \n&amp; Housing Costs in 2023&quot;,
+    main.title.position = c(&quot;center&quot;, &quot;top&quot;),
+    main.title.size = 1.2,
+    main.title.fontface = &quot;bold&quot;,
+    outer.margins = c(0.1, 0.02, 0.02, 0.02),
+    legend.text.size = 0.61,
+    legend.outside = TRUE,
+    legend.outside.position = &quot;left&quot;
+  ) +
+    tm_compass(position = c(&quot;left&quot;, &quot;top&quot;), size = 1.5) +
+    tm_scale_bar(position = c(&quot;left&quot;, &quot;bottom&quot;))</code></pre>
+<p><img src="AdvGeovis_Lab1_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p>In the center of the state, the counties that are red with high
+median housing costs and high number of older home owners may face a
+higher risk of housing crisis. The west side of the state seems to have
+both less housing costs and elderly home owners.</p>
+</div>
+<div id="visual-3-ratio-of-owners-verus-renters-aged-65-74"
+class="section level3">
+<h3>Visual 3: Ratio of Owners verus Renters Aged 65-74</h3>
+<pre class="r"><code># Create a logical flag for top 25% renter tracts
+NCarolina_county &lt;- NCarolina_county %&gt;%
+  mutate(
+    OwnerRenterRatio = NCOwner65 / NCRenter65
+  )
+
+tm_shape(NCarolina_county) +
+  tm_polygons(
+    col = &quot;OwnerRenterRatio&quot;,
+    palette = &quot;RdBu&quot;,         # Red = more renters, Blue = more owners
+    style = &quot;quantile&quot;,       # Try &quot;pretty&quot; or &quot;jenks&quot; if it looks off
+    border.col = NA,
+    title = &quot;Owner-to-Renter Ratio&quot;
+  ) +
+  tm_layout(
+    main.title = &quot;North Carolina Ratio of Owners to Renters \nAged 65-74 by County in 2023&quot;,
+    main.title.position = c(&quot;center&quot;, &quot;top&quot;),
+    main.title.size = 1.2,
+    main.title.fontface = &quot;bold&quot;,
+    outer.margins = c(0.1, 0.02, 0.02, 0.02),
+    legend.outside = TRUE,
+    legend.outside.position = &quot;right&quot;
+  ) +
+    tm_compass(position = c(&quot;left&quot;, &quot;top&quot;), size = 1.5) +
+    tm_scale_bar(position = c(&quot;left&quot;, &quot;bottom&quot;))</code></pre>
+<p><img src="AdvGeovis_Lab1_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p>It seems there are more elderly owners than renters in the areas on
+the edges of the states while the center is more renter heavier.
+Interestingly, the center of the state is where we saw the higher
+housing costs. This may explain why we find more elderly renters and
+more struggling elderly owners in these counties.</p>
+</div>
+<div id="assignment-questions" class="section level3">
+<h3>Assignment Questions</h3>
+<p><strong>1. Discuss the advantages and challenges associated with an
+open data science approach. Provide an example based on this week’s
+reading. (1-2 paragraphs)</strong></p>
+<p>An advantage of the open data science approach is the increase in
+innovation and efficiency when data sets are able to be reused for new
+projects by new people. Kitchin (2013) discusses how useful big data has
+become in supplying detailed and low-cost data that can help promote the
+value of geography to a wider audience like Obama’s team collecting
+voter data before the election. With all this new data accessible,
+having an open data science approach can make big data even more
+powerful. This also helps data creators to reach broader audiences when
+data is openly shared as their information is more accessible. A
+challenge with the open data science approach is data quality issues.
+Kitchin (2013) explains how big data can make it difficult to extract
+useful and valid information from the data deluge of vast information.
+When there is so much data, it can be hard to discern what data is
+actually useful which is common in open data science approaches that
+leave you with too much information.</p>
+<p><strong>2. Create a markdown document that showcases an analysis of
+this week’s data or any other dataset of your choice. Include
+descriptive text that explains your analysis, and incorporate figures
+and geovisualizations.Include 1 chart and 1 map. Structure and explain
+your analysis with text, headings, highlights, images and other markdown
+basics.</strong></p>
+<p>For my maps, I chose to answer the research question: how do the mean
+housing costs and the aging population of home owners and renters in
+North Carolina inform us of the rising affordable housing crisis. I
+created a chloropleth map visualizing the mean housing costs in all the
+counties of North Carolina to get an understanding of which areas have
+higher housing costs. For the next map, I chose to create a proportional
+symbol map layered on top of the chloropleth map I previously made to
+showcase the number of aged 65-74 homeowners for each state in
+comparison to the mean housing cost level of that county. The specific
+steps I took to mitigate bias is I chose to classify the data by
+quantiles to ensure the data was represented as accurately as possible
+while differentiating between classes. The final map I created is a
+ratio of owners to renters aged 65-74 to visually understand what type
+of elderly population is more prevalent when concerned with hosuing
+costs in North Carolina counties. As a chloropleth map, this can be
+useful to easily point out the counties with more owners compared to
+renters to better inform the other maps about where housing costs being
+high is more of a problem. I minimized bias by calculating a ratio
+versus simply showing owners versus renters to normalize the data.</p>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
