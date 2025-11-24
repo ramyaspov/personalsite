@@ -1,0 +1,441 @@
+---
+title: "Lab 4: Sentiment Analysis of Ariana Grande's Best Albums"
+author: "Ramya Subramanian"
+date: "2025-11-22"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Load Libraries
+
+```{r, message = FALSE}
+library(tidytext)
+library(textdata)
+library(tidyverse)
+library(stringr)
+library(wordcloud)
+library(RColorBrewer)
+library(reshape2)
+library(png)
+library(grid)
+```
+
+### Get sentiment dictionaries 
+```{r}
+bing <- get_sentiments("bing")
+nrc <- get_sentiments("nrc")
+
+```
+
+### Get song lyrics for sentiment analysis 
+```{r}
+ariana <- read.csv("ArianaGrande.csv")
+```
+
+### Convert text to tidy format
+```{r}
+## Make sure that the lyrics are characters
+ariana$lyric <- as.character(ariana$Lyric)
+
+tidy_song <- ariana %>%
+  unnest_tokens(word,lyric)
+```
+
+### Look at positive and negative word distribution by the best Ariana albums
+```{r}
+selected_albums <- c("Yours Truly", "Wicked (15th Anniversary Special Edition)", "thank u, next", "Sweetener", "Positions", "My Everything", "Dangerous Woman")
+
+album_sentiment <- tidy_song %>%
+  filter(Album %in% selected_albums) %>%
+  inner_join(bing, by = "word", relationship = "many-to-many") %>%
+  count(Album, sentiment) %>%
+  mutate(n = ifelse(sentiment == "negative", -n, n))
+
+# Create bar graph
+ggplot(album_sentiment, aes(x = Album, y = n, fill = sentiment)) +
+  geom_col() +
+  coord_flip() +
+  labs(
+    title = "Positive vs Negative Sentiment by Ariana's Best Albums",
+    x = "Album",
+    y = "Sentiment Count",
+    fill = "Sentiment"
+  ) +
+  scale_fill_manual(values = c("positive" = "darkgreen",
+                               "negative" = "firebrick")) +
+  theme_minimal() +
+  theme(plot.title = element_text(size = 14, hjust = 0.5),
+        plot.margin = margin(20, 40, 20, 40))
+```
+
+### Make a Word Cloud for My Everything and Sweetener Album
+
+We can see the My Everything and Sweetener Album have a 50/50 split of negative and positive words. It would be interesting to see what these words are for positive versus negative. 
+
+```{r}
+
+tidy_song %>%
+  filter(Album %in% c("My Everything", "Sweetener")) %>%
+  inner_join(get_sentiments("bing")) %>%
+  count(word, sentiment, sort = TRUE) %>%
+  acast(word ~ sentiment, value.var = "n", fill = 0) %>%
+  comparison.cloud(colors = c("hotpink", "purple"),
+                   max.words = 100)
+```
+
+### Add sentiment to each word from the lyrics of Ariana's 2018 "Sweetener" Album
+
+Let's dive into Ariana's Sweetener album and understand what these nuanced postive and negative emotions could be using the nrc dictionary. 
+
+```{r}
+nrc_sweetener <- tidy_song %>%
+  filter(Album == "Sweetener") %>%
+  inner_join(nrc, by = "word", relationship = "many-to-many") %>%
+  count(sentiment, sort = TRUE)
+
+ggplot(nrc_sweetener, aes(x = sentiment, y = n, fill = sentiment)) +
+geom_col() +
+labs(title = "NRC Sentiment Distribution for Ariana Grande's Sweetener Album (2018)", x = "Sentiment Category", y = "Word Count") +
+theme_minimal() +
+theme(legend.position = "none") +
+coord_flip()
+```
+
+### Results and Observations
+
+**_1. Present your findings using suitable charts, and explain the results in 1-2 paragraphs within the knit HTML output, including relevant code and visualizations._**
+
+I conducted a sentiment analysis on a select number of Ariana Grande albums based on my preference of what I find to be the best. My first analysis visualized the positive and negative word distribution for these albums in a diverging bar graph using the bing lexicon dictionary. From this chart, we can see most albums are slightly heavier on the positive words with a few exceptions of "My Everything" and "Sweetener" which are an equal split between positive and negative words. I thought it would be interesting to delve into these two albums for the next chart and see what the most common positive and negative words through a word cloud. From the word cloud, we can see "problem" is the most common negative word and "like" is the most common positive word. There could be faults with the word "like" depending on context. To understand the specific sentiment distribution of the words in the "Sweetener" album, I created a bar graph using the nrc lexicon dictionary sentiments to visualize more nuanced emotions. From this graph, we can see anticipation and joy are the most common sentiments found in this album. 
+
+**_2. Perform an AI-based analysis of your data and compare these results with those from the sentiment analysis. Reflect on how each method handles ambiguous text, providing examples of challenges related to subjectivity, tone, context, polarity, irony, sarcasm, comparisons, and neutral language (1-2 paragraphs; appropriate code and charts)_**
+
+AI for sentiment analysis
+
+**AI Prompt to ChatGPT**
+
+"Create a few sentiment analysis visualizations of this dataset of ariana grande's albums. I want to learn more about the positive and negative words between each album, what words are more common, and visualizations that look into specific emotions like anger or others from the nrc or bing dictionary."
+
+I got a message saying I need to provide csv files of the bing and nrc dictionaries. I found csv's of both of these dictionaries on Kaggle: https://www.kaggle.com/datasets/andradaolteanu/bing-nrc-afinn-lexicons
+
+I uploaded these two csvs to ChatGPT to continue the analysis.
+
+**AI Results:**
+
+"Great — I ran the sentiment analysis using the Bing and NRC files you uploaded and created visualizations and CSV summaries.
+
+What I produced
+Saved to /mnt/data/sentiment_outputs:
+
+Images
+/mnt/data/sentiment_outputs/top_words_overall.png — Top 20 words across all lyrics.
+/mnt/data/sentiment_outputs/top_words_per_album.png — Top words per album (first 6 albums shown).
+
+/mnt/data/sentiment_outputs/pos_neg_per_album.png — Positive vs negative word counts per album (Bing lexicon).
+/mnt/data/sentiment_outputs/emotion_distribution_per_album.png — Stacked emotion distribution per album (NRC lexicon, top emotions).
+/mnt/data/sentiment_outputs/polarity_per_album.png — Normalized polarity per album ((pos − neg) / total words).
+
+CSVs
+/mnt/data/sentiment_outputs/top_words_overall.csv — Top words and counts.
+/mnt/data/sentiment_outputs/pos_neg_counts_per_album.csv — Positive/negative counts by album.
+/mnt/data/sentiment_outputs/emotion_counts_per_album.csv — Emotion counts by album (NRC).
+
+Quick findings (from the outputs)
+I extracted tokens from the Lyric column and used Album for grouping (your file used those column names).
+Bing lexicon merged successfully (file had two columns: word + sentiment).
+NRC file looked like a long format (word, emotion, assoc) and was pivoted to wide; the top emotions were used for the stacked plot.
+
+The script computed per-album positive vs negative counts and normalized polarity (pos − neg divided by album word count), plus emotion tallies.
+
+Download links
+Click these to download the main outputs:
+
+**_Note: I noticed the x axis labels are cut off, but this is an issue to troubleshoot later._**
+
+Top words (PNG)
+
+```{r}
+pic1 <- readPNG("top_words_overall.png")
+grid.raster(pic1)
+```
+
+Top words per album (PNG)
+
+```{r}
+pic2 <- readPNG("top_words_per_album.png")
+grid.raster(pic2)
+```
+
+Pos vs Neg per album (PNG)
+
+```{r}
+pic3 <- readPNG("pos_neg_per_album.png")
+grid.raster(pic3)
+```
+
+Emotion distribution per album (PNG)
+
+```{r}
+pic4 <- readPNG("emotion_distribution_per_album.png")
+grid.raster(pic4)
+```
+
+Polarity per album (PNG)
+
+```{r}
+pic5 <- readPNG("polarity_per_album.png")
+grid.raster(pic5)
+```
+
+CSVs:
+
+Top words overall (CSV)
+Pos/Neg counts per album (CSV)
+Emotion counts per album (CSV)"
+
+**My analysis:**
+The sentiment analysis methods used in this project with AI prompts interprets ambiguous language differently based on AI's ideas for creating sentiment visualizations and the functionality of the two lexicons. The Bing lexicon strictly assigns positive or negative polarity based on individual words which can misrepresent emotionally complex lyrics. Words expressing empowerment through struggle or sadness through affectionate language seem to be classified incorrectly because the method does not consider tone or intent. The NRC emotion lexicon offers more nuance by assigning words with emotions like anger or joy, but it still struggles with context-dependent meanings. I noticed a word such as “fall” indicates sadness in one lyric and confidence in another, but the lexicon treats it the same regardless of usage. It was also difficult assigning colors and label names when using AI to develop the visualizations.
+
+Both approaches also struggle with more subtle forms of ambiguity such as irony, sarcasm, and mixed emotional statements. Lyrics that intentionally invert meaning such as humorous self-deprecation are interpreted literally which causes inaccurate polarity scores. Comparisons like “I’m better without you but I still miss you” contain conflicting signals that lexicons cannot resolve, and neutral filler words common in pop lyrics tend to weaken or distort sentiment patterns rather than clarify them. These challenges show that while lexicon-based sentiment tools capture general trends, they lack the ability to fully interpret figurative language in music. Specifically, using AI makes it more difficult to create prompts that can distinguish different tones or sentiments in words but offers more sentiment visualization ideas. 
+
+Python Code ChatGPT used:
+```{r, eval = FALSE}
+# Retry: robust column detection and rerun analysis/plots
+import pandas as pd
+import matplotlib.pyplot as plt
+import re
+from collections import Counter, defaultdict
+import os
+
+STOPWORDS = {
+"i","me","my","myself","we","our","ours","ourselves","you","your","yours","yourself","yourselves",
+"he","him","his","himself","she","her","hers","herself","it","its","itself","they","them","their",
+"theirs","themselves","what","which","who","whom","this","that","these","those","am","is","are","was",
+"were","be","been","being","have","has","had","having","do","does","did","doing","a","an","the","and",
+"but","if","or","because","as","until","while","of","at","by","for","with","about","against","between",
+"into","through","during","before","after","above","below","to","from","up","down","in","out","on","off",
+"over","under","again","further","then","once","here","there","when","where","why","how","all","any","both",
+"each","few","more","most","other","some","such","no","nor","not","only","own","same","so","than","too","very",
+"s","t","can","will","just","don","should","now","like"
+}
+
+lyrics_path = "/mnt/data/ArianaGrande.csv"
+bing_path = "/mnt/data/Bing.csv"
+nrc_path = "/mnt/data/NRC.csv"
+
+df = pd.read_csv(lyrics_path)
+print("ArianaGrande.csv loaded. Shape:", df.shape)
+print("Columns:", list(df.columns)[:20])
+
+# find lyrics column case-insensitive
+cols_lower = {c.lower(): c for c in df.columns}
+lyrics_col = None
+for candidate in ['lyrics','lyric','text','song','words','lyrics_text']:
+    if candidate in cols_lower:
+        lyrics_col = cols_lower[candidate]
+        break
+if lyrics_col is None:
+    raise ValueError("Could not find a lyrics column. Columns present: " + ", ".join(df.columns))
+
+# find album column case-insensitive
+album_col = None
+for candidate in ['album','album_name','record','release','albumtitle']:
+    if candidate in cols_lower:
+        album_col = cols_lower[candidate]
+        break
+if album_col is None:
+    print("No album column detected; treating all as single collection.")
+    album_col = None
+
+def tokenize(text):
+    if not isinstance(text, str):
+        return []
+    tokens = re.findall(r"[a-zA-Z']+", text.lower())
+    tokens = [t.strip("'") for t in tokens if t not in STOPWORDS and len(t.strip("'"))>1]
+    return tokens
+
+df['tokens'] = df[lyrics_col].astype(str).apply(tokenize)
+df['word_count'] = df['tokens'].apply(len)
+
+if album_col:
+    exploded = df[[album_col,'tokens']].explode('tokens').dropna().rename(columns={album_col:'album', 'tokens':'word'})
+else:
+    exploded = df[['tokens']].explode('tokens').dropna().rename(columns={'tokens':'word'})
+    exploded['album'] = 'All Albums'
+
+# Load lexicons
+bing = pd.read_csv(bing_path)
+print("Bing loaded. Shape:", bing.shape)
+bing_cols = [c.lower() for c in bing.columns]
+if 'word' in bing_cols and ('sentiment' in bing_cols or 'sent' in bing_cols):
+    wcol = bing.columns[bing_cols.index('word')]
+    scol = bing.columns[bing_cols.index('sentiment')] if 'sentiment' in bing_cols else bing.columns[bing_cols.index('sent')]
+    bing = bing[[wcol,scol]].rename(columns={wcol:'word', scol:'sentiment'})
+else:
+    if bing.shape[1] >= 2:
+        bing = bing.iloc[:,0:2].rename(columns={bing.columns[0]:'word', bing.columns[1]:'sentiment'})
+bing['word'] = bing['word'].astype(str).str.lower().str.strip()
+
+nrc = pd.read_csv(nrc_path)
+print("NRC loaded. Shape:", nrc.shape)
+nrc_cols = [c.lower() for c in nrc.columns]
+if 'emotion' in nrc_cols or 'sentiment' in nrc_cols:
+    word_col = nrc.columns[0]
+    emo_col = nrc.columns[[i for i,c in enumerate(nrc_cols) if c in ('emotion','sentiment')][0]]
+    assoc_col = None
+    for c in nrc.columns:
+        if c not in [word_col, emo_col]:
+            assoc_col = c
+            break
+    if assoc_col is None:
+        assoc_col = nrc.columns[-1]
+    nrc_long = nrc[[word_col, emo_col, assoc_col]].copy()
+    nrc_long.columns = ['word','emotion','assoc']
+    def assoc_truth(x):
+        try:
+            return int(x)>0
+        except:
+            return str(x).strip() not in ('0','no','false','f','n')
+    nrc_long['assoc'] = nrc_long['assoc'].apply(assoc_truth)
+    nrc_long = nrc_long[nrc_long['assoc']]
+    nrc_wide = nrc_long.pivot_table(index='word', columns='emotion', values='assoc', fill_value=0)
+    nrc_wide = nrc_wide.reset_index().rename_axis(None, axis=1)
+    nrc = nrc_wide
+else:
+    nrc = nrc.rename(columns={nrc.columns[0]:'word'})
+    for c in nrc.columns[1:]:
+        try:
+            nrc[c] = pd.to_numeric(nrc[c], errors='coerce').fillna(0).astype(int)
+        except:
+            nrc[c] = nrc[c].astype(str).apply(lambda x: 1 if str(x).strip().lower() in ('1','true','yes','y') else 0)
+
+nrc['word'] = nrc['word'].astype(str).str.lower().str.strip()
+
+exploded['word'] = exploded['word'].astype(str).str.lower().str.strip()
+exploded = exploded.merge(bing, on='word', how='left')
+exploded = exploded.merge(nrc, on='word', how='left')
+
+# fill emotion NaNs
+emotion_cols = [c for c in exploded.columns if c not in ('album','word','sentiment')]
+for c in emotion_cols:
+    exploded[c] = exploded[c].fillna(0)
+
+overall_counts = Counter(exploded['word'])
+top_overall = overall_counts.most_common(20)
+
+pos_neg_counts = exploded[exploded['sentiment'].notnull()].groupby(['album','sentiment']).size().unstack(fill_value=0)
+
+emotion_list = [c for c in exploded.columns if c not in ('album','word','sentiment')]
+emotion_sums = exploded.groupby('album')[emotion_list].sum()
+
+out_dir = "/mnt/data/sentiment_outputs"
+os.makedirs(out_dir, exist_ok=True)
+
+# Plot 1
+words, counts = zip(*top_overall)
+plt.figure(figsize=(10,5))
+plt.bar(range(len(words)), counts)
+plt.xticks(range(len(words)), words, rotation=45, ha='right')
+plt.title("Top 20 Words (All Lyrics)")
+plt.tight_layout()
+plot1 = os.path.join(out_dir, "top_words_overall.png")
+plt.savefig(plot1)
+plt.close()
+
+# Plot 2: per album top words (first 6)
+albums = exploded['album'].unique().tolist()
+albums_to_plot = albums[:6]
+fig, axs = plt.subplots(len(albums_to_plot),1, figsize=(10, 4*len(albums_to_plot)))
+if len(albums_to_plot)==1:
+    axs = [axs]
+for ax, alb in zip(axs, albums_to_plot):
+    top = Counter(exploded[exploded['album']==alb]['word']).most_common(15)
+    if top:
+        w,c = zip(*top)
+    else:
+        w,c = [],[]
+    ax.bar(range(len(w)), c)
+    ax.set_xticks(range(len(w)))
+    ax.set_xticklabels(w, rotation=45, ha='right')
+    ax.set_title(f"Top words — {alb}")
+plt.tight_layout()
+plot2 = os.path.join(out_dir, "top_words_per_album.png")
+plt.savefig(plot2)
+plt.close()
+
+# Plot 3: pos vs neg per album
+pos_neg_plot = pos_neg_counts.copy()
+pos_neg_plot = pos_neg_plot.reindex(albums).fillna(0)
+fig, ax = plt.subplots(figsize=(10,6))
+pos_neg_plot.plot(kind='bar', ax=ax)
+ax.set_title("Positive vs Negative word counts per Album (Bing lexicon)")
+ax.set_xlabel("Album")
+ax.set_ylabel("Count of sentiment words")
+plt.tight_layout()
+plot3 = os.path.join(out_dir, "pos_neg_per_album.png")
+plt.savefig(plot3)
+plt.close()
+
+# Plot 4: top emotions stacked
+emotion_totals = emotion_sums.sum().sort_values(ascending=False)
+top_emotions = emotion_totals.index[:6].tolist()
+if not top_emotions:
+    # fallback if no emotion columns found
+    top_emotions = []
+emotion_plot_df = emotion_sums[top_emotions] if top_emotions else pd.DataFrame()
+if not emotion_plot_df.empty:
+    fig, ax = plt.subplots(figsize=(12,6))
+    emotion_plot_df.plot(kind='bar', stacked=True, ax=ax)
+    ax.set_title("Emotion distribution per Album (NRC lexicon) - top emotions")
+    ax.set_xlabel("Album")
+    ax.set_ylabel("Count of emotion-associated words")
+    plt.tight_layout()
+    plot4 = os.path.join(out_dir, "emotion_distribution_per_album.png")
+    plt.savefig(plot4)
+    plt.close()
+else:
+    plot4 = None
+
+# Plot 5: polarity normalized
+album_word_counts = exploded.groupby('album').size()
+polarity = (pos_neg_counts.get('positive', 0) - pos_neg_counts.get('negative', 0)).fillna(0)
+polarity_norm = polarity / album_word_counts
+polarity_norm = polarity_norm.fillna(0)
+fig, ax = plt.subplots(figsize=(10,5))
+polarity_norm.plot(kind='bar', ax=ax)
+ax.set_title("Normalized polarity per album ( (pos-neg) / total words )")
+ax.set_xlabel("Album")
+ax.set_ylabel("Normalized polarity")
+plt.tight_layout()
+plot5 = os.path.join(out_dir, "polarity_per_album.png")
+plt.savefig(plot5)
+plt.close()
+
+# Save CSVs
+overall_counts_df = pd.DataFrame(top_overall, columns=['word','count'])
+overall_counts_df.to_csv(os.path.join(out_dir, "top_words_overall.csv"), index=False)
+pos_neg_counts.to_csv(os.path.join(out_dir, "pos_neg_counts_per_album.csv"))
+emotion_sums.to_csv(os.path.join(out_dir, "emotion_counts_per_album.csv"))
+
+# Show quick tables
+print("\nTop 20 words overall:")
+display(overall_counts_df.head(20))
+
+print("\nPositive/Negative counts per album:")
+display(pos_neg_counts.reset_index().fillna(0))
+
+if plot4:
+    print("\nSaved emotion distribution plot as:", plot4)
+else:
+    print("\nNo emotion columns detected in NRC lexicon merge (check NRC format).")
+
+print("\nSaved plots and CSVs to:", out_dir)
+for fname in ["top_words_overall.png","top_words_per_album.png","pos_neg_per_album.png","emotion_distribution_per_album.png","polarity_per_album.png",
+              "top_words_overall.csv","pos_neg_counts_per_album.csv","emotion_counts_per_album.csv"]:
+    path = os.path.join(out_dir, fname)
+    if os.path.exists(path):
+        print("- " + path)
+
+```
